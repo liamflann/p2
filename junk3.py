@@ -8,7 +8,7 @@ Created on Wed May  2 12:38:06 2018
 import pandas as pd
 import sys
 
-secretWord = "mountain"
+secretWord = "mountainnnnn"
 secretWord = secretWord.lower()
 guessedWord = "_" * len(secretWord)
 guessedWord = list(guessedWord)
@@ -20,6 +20,12 @@ def wrongGuess(counter):
     print(counter)
     getGuess()
 
+def gotWord(guessedWord):
+    gotIt = "_"*len(secretWord)
+    if word == list(gotIt):
+        input("You won! Press any key to exit")
+    else:
+        getGuess()
 #Ask user for a letter
 def getGuess():
     guess = input("What letter do you guess? ")
@@ -27,16 +33,34 @@ def getGuess():
     return
 
 def morethanoneLetter(secretWord, guess):
-
-    print("nothing")
-    getGuess()
+    print("The letter occurs more than once.")
+    c = secretWord.count(guess) -1
+    index = word.index(guess)
+    guessedWord[index]=guess
+    word[index]="_"
+    print(' '.join(guessedWord))
+    print("Please type the letter THEN press enter {} times".format(c))
+    i = 0
+    while i <= c:
+        extra = input()
+        index = word.index(extra)
+        guessedWord[index]=extra
+        word[index]="_"
+        print(' '.join(guessedWord))
+        i = i +1
+        j = c - i
+        if j > 0:
+            print("Thanks, enter the letter {} more time(s)".format(j))
+        if i == c:
+            break
+    gotWord(guessedWord)
     
 def oneLetter(guess):
     index = word.index(guess)
     guessedWord[index]=guess
     word[index]="_"
     print(' '.join(guessedWord))
-    getGuess()
+    gotWord(guessedWord)
     
 
 def checkforLetter(guess, counter):
@@ -50,7 +74,7 @@ def checkforLetter(guess, counter):
         print("Sorry, the letter is not there.")
         getGuess()
         
-
-if __name__ == '__main__':
-    wrongGuessCounter = 0
-    getGuess()
+getGuess()
+#if __name__ == '__main__':
+#    wrongGuessCounter = 0
+#    getGuess()
