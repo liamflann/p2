@@ -15,10 +15,17 @@ guessedWord = list(guessedWord)
 word = list(secretWord)
 usedLetters = []
 counter = 0
-def wrongGuess(counter):
-    counter = counter + 1
-    print(counter)
-    getGuess()
+def wrongGuess():
+    global counter
+    if counter < 5:
+        counter = counter + 1
+        left = 6 - counter
+        print("You have {} guesses left".format(left))
+        getGuess()
+    elif counter == 5:
+        print("You lose. Your the word was {}".format(secretWord))
+        input("Want to play again? Y/N ")
+   
 
 def gotWord(guessedWord):
     gotIt = "_"*len(secretWord)
@@ -29,7 +36,7 @@ def gotWord(guessedWord):
 #Ask user for a letter
 def getGuess():
     guess = input("What letter do you guess? ")
-    checkforLetter(guess, counter)
+    checkforLetter(guess)
     return
 
 def morethanoneLetter(secretWord, guess):
@@ -63,16 +70,17 @@ def oneLetter(guess):
     gotWord(guessedWord)
     
 
-def checkforLetter(guess, counter):
-    if (secretWord.find(guess)!=-1):
+def checkforLetter(guess):
+    
+    while (secretWord.find(guess)!=-1):
         print("The letter is there.")
         if (secretWord.count(guess) > 1):
             morethanoneLetter(secretWord,guess)
         else:
             oneLetter(guess)
-    else:
-        print("Sorry, the letter is not there.")
-        getGuess()
+    while (secretWord.find(guess) == -1):
+        wrongGuess()
+            
         
 getGuess()
 #if __name__ == '__main__':
