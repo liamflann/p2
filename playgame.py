@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr 24 11:06:48 2018
+
 This is a collection of games. There is a dice game, and a number guessing game
 
 Algorithm:
@@ -69,7 +69,8 @@ def differentgame():
         gamechoice()
     else:
         thanksforplaying()
-    return
+    return 0
+    
 
 def hangman():
 
@@ -97,13 +98,16 @@ def hangman():
         for row in csv_f:
             words.append(row[0])
         secretWord = random.choice(words) 
-    if level == "hard":
+    elif level == "hard":
         f = open('hard.csv')
         csv_f = csv.reader(f)
         words = []
         for row in csv_f:
             words.append(row[0])
         secretWord = random.choice(words) 
+    elif level not in ["easy", "medium", "hard"]:
+        print("I'm sorry, that's not a valid choice.")
+        hangman()
         
     for char in secretWord:
         sys.stdout.write("_ ")
@@ -114,10 +118,22 @@ def hangman():
     word = list(secretWord)
     usedLetters = []
     counter = 0
-    def wrongGuess(counter):
-        counter = counter + 1
-        print(counter)
-        getGuess()
+    def wrongGuess():
+        global counter
+        if counter < 5:
+            counter = counter + 1
+            left = 6 - counter
+            print("You have {} guesses left".format(left))
+            getGuess()
+        elif counter == 5:
+            print("You lose. The word was {}".format(secretWord))
+            counter = 0
+            answer = input("Want to play again? Y/N ")
+            answer = answer.lower()
+            while(answer == 'y'):
+                hangman()
+            if answer == 'n':
+                differentgame()
     
     def gotWord(guessedWord):
         gotIt = "_"*len(secretWord)
@@ -135,7 +151,7 @@ def hangman():
     #Ask user for a letter
     def getGuess():
         guess = input("What letter do you guess? ")
-        checkforLetter(guess, counter)
+        checkforLetter(guess)
         return
     
     def morethanoneLetter(secretWord, guess):
@@ -169,7 +185,7 @@ def hangman():
         gotWord(guessedWord)
         
     
-    def checkforLetter(guess, counter):
+    def checkforLetter(guess):
         if (secretWord.find(guess)!=-1):
             print("The letter is there.")
             if (secretWord.count(guess) > 1):
@@ -178,7 +194,7 @@ def hangman():
                 oneLetter(guess)
         else:
             print("Sorry, the letter is not there.")
-            getGuess()
+            wrongGuess()
             
     getGuess()
 
