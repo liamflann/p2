@@ -78,14 +78,14 @@ def hangman():
     level= level.lower()
     
     if level == "easy":
-        words = pd.read_csv("easy.txt", sep=" ",header=None)
+        words = pd.read_csv("easy.csv", sep=" ",header=None)
     elif level == "medium":
-        words = pd.read_csv("medium.txt", sep = " ", header=None)
+        words = pd.read_csv("medium.csv", sep = " ", header=None)
     elif level == "hard":
-        words = pd.read_csv("hard.txt", sep= " ", header = None)
+        words = pd.read_csv("hard.csv", sep= " ", header = None)
     
     if level == "easy":
-        f = open('easy.csv')
+        f = open('easy2.csv')
         csv_f = csv.reader(f)
         words = []
         for row in csv_f:
@@ -116,18 +116,16 @@ def hangman():
     guessedWord = "_" * len(secretWord)
     guessedWord = list(guessedWord)
     word = list(secretWord)
-    usedLetters = []
-    counter = 0
+    counter = [0]
+    
     def wrongGuess():
-        global counter
-        if counter < 5:
-            counter = counter + 1
-            left = 6 - counter
+        counter[0] += 1
+        left = 6 - counter[0]
+        if left > 0:
             print("You have {} guesses left".format(left))
             getGuess()
-        elif counter == 5:
+        elif (left == 0):
             print("You lose. The word was {}".format(secretWord))
-            counter = 0
             answer = input("Want to play again? Y/N ")
             answer = answer.lower()
             while(answer == 'y'):
